@@ -12,6 +12,7 @@ if (isset($_GET['event'])) {
     $_SESSION['userMsg'] = 'Something went wrong, Please try again';
     $_SESSION['msgType'] =  'danger';
 }
+//c
 
 if ($action == 'add' || $action == 'edit') {
 
