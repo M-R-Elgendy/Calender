@@ -12,15 +12,15 @@ if (isset($_SESSION['userMsg'])) {
 $connection = mysqli_connect("localhost", "root", "");
 mysqli_set_charset($connection, 'utf8');
 mysqli_select_db($connection, "mayfinalcal");
-$articlesSql = "SELECT * FROM `events` ";
-$articlesResulet = mysqli_query($connection, $articlesSql);
-while ($articlesRow = mysqli_fetch_array($articlesResulet)) {
+$allEventsSql = "SELECT * FROM `events` ";
+$allEventsResulet = mysqli_query($connection, $allEventsSql);
+while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
 
-    $id = $articlesRow['id'];
-    $txt = $articlesRow['txt'];
-    $date = $articlesRow['date'];
-    $days = $articlesRow['days'];
-    $color = $articlesRow['color'];
+    $id = $allEventsRow['id'];
+    $txt = $allEventsRow['txt'];
+    $date = $allEventsRow['date'];
+    $days = $allEventsRow['days'];
+    $color = $allEventsRow['color'];
     $calendar->add_event($id, $txt, $date, $days, $color);
 }
 ?>
@@ -33,26 +33,46 @@ while ($articlesRow = mysqli_fetch_array($articlesResulet)) {
 
     <script src="js/vendor/bootstrap.bundle.min.js"></script>
     <script src="js/vendor/jquery-3.6.0.slim.min.js"></script>
+    <script src="js/notify.js"></script>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/calendar.css" rel="stylesheet" type="text/css">
 
+    <?php
+
+    $toDay = date("Y-m-d");
+    $toDayEventSql = "SELECT * FROM events WHERE date = '$toDay'";
+
+    $toDayEventResulet = mysqli_query($connection, $toDayEventSql);
+    while ($toDayEventRow = mysqli_fetch_assoc($toDayEventResulet)) {
+        $toDayEventarray[] = $toDayEventRow;
+    }
+    $toDayEventJson = json_encode($toDayEventarray);
+    // echo $officersJson;
+    echo "
+<script>
+    var toDayEventJson = $toDayEventJson;
+</script>
+";
+
+    ?>
+
 </head>
 
-<body>
+<body id="continer">
     <nav class="navtop" style="display: block;">
         <div>
             <h1>Event Calender</h1>
         </div>
     </nav>
 
-    <div></div>
+    <div id="easyNotify"></div>
+
     <div id="response" class="alert alert-<?= $msgType ?> alert-dismissible fade show mt-3" role="alert"
         style="display: none;">
         <strong id="msgText"><?= $msg ?></strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
 
     <div class="content home">
         <?= $calendar ?>
