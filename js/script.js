@@ -27,9 +27,9 @@ function changeMonth(){
     var currentMonth = currentDate.getMonth()+1;
 
     if (currentSelectedMonth == currentMonth){
-        window.location.href = "example.php";
+        window.location.replace("example.php");
     }else{
-        window.location.href = "example.php?date="+newMonth;
+        window.location.replace("example.php?date="+newMonth);
     }
 }
 
@@ -60,7 +60,8 @@ function addEvent(eventAction, eventId) {
                 addColor + "&event=" + eventAction);
             xmlhttp.send();
             // reloadWithAjax();
-            window.location.replace("example.php?date="+ $('#monthSelector').val());
+            // window.location.replace("example.php?date="+ $('#monthSelector').val());
+            changeMonth()
 
         } else if (eventAction == 'edit') {
 
@@ -69,17 +70,27 @@ function addEvent(eventAction, eventId) {
             var addDays = $("#days" + eventId).val();
             var addColor = $("#color" + eventId).val();
 
-            xmlhttp.open("GET", "api.php?text=" + addText + "&date=" + addDate + "&days=" + addDays + "&color=" +
+            if (confirm('Please confirm the edit operation.')) {
+                xmlhttp.open("GET", "api.php?text=" + addText + "&date=" + addDate + "&days=" + addDays + "&color=" +
                 addColor + "&event=" + eventAction + "&eventID=" + eventId);
             xmlhttp.send();
             // reloadWithAjax();
-            window.location.replace("example.php?date="+ $('#monthSelector').val());
+            // window.location.replace("example.php?date="+ $('#monthSelector').val());
+            changeMonth()
+            }
+
+          
 
         } else if (eventAction == 'remove') {
-            xmlhttp.open("GET", "api.php?eventID=" + eventId + "&event=" + eventAction);
-            xmlhttp.send();
-            // reloadWithAjax();
-            window.location.replace("example.php?date="+ $('#monthSelector').val());
+
+            if (confirm('THIS EVENT WILL BE DELETED PERMANENTLY. Are you sure?')) {
+                xmlhttp.open("GET", "api.php?eventID=" + eventId + "&event=" + eventAction);
+                xmlhttp.send();
+                // reloadWithAjax();
+                // window.location.replace("example.php?date="+ $('#monthSelector').val());
+                changeMonth()
+            }
+
         }
 
     }
@@ -127,7 +138,7 @@ $( document ).ready(function() {
                     lang: 'en-USA',
                 }
             };
-            // $("#easyNotify").easyNotify(options);
+            $("#easyNotify").easyNotify(options);
         }
     }
 });

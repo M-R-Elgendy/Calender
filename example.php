@@ -42,7 +42,7 @@ while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
 
     $toDay = date("Y-m-d");
     $toDayEventSql = "SELECT * FROM events WHERE date = '$toDay'";
-
+    $toDayEventarray = [];
     $toDayEventResulet = mysqli_query($connection, $toDayEventSql);
     while ($toDayEventRow = mysqli_fetch_assoc($toDayEventResulet)) {
         $toDayEventarray[] = $toDayEventRow;
