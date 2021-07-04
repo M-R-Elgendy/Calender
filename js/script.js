@@ -60,6 +60,7 @@ function addEvent(eventAction, eventId) {
                 addColor + "&event=" + eventAction);
             xmlhttp.send();
             // reloadWithAjax();
+            // showResponse()
             // window.location.replace("example.php?date="+ $('#monthSelector').val());
             changeMonth()
 
@@ -75,6 +76,7 @@ function addEvent(eventAction, eventId) {
                 addColor + "&event=" + eventAction + "&eventID=" + eventId);
             xmlhttp.send();
             // reloadWithAjax();
+            // showResponse()
             // window.location.replace("example.php?date="+ $('#monthSelector').val());
             changeMonth()
             }
@@ -87,6 +89,7 @@ function addEvent(eventAction, eventId) {
                 xmlhttp.open("GET", "api.php?eventID=" + eventId + "&event=" + eventAction);
                 xmlhttp.send();
                 // reloadWithAjax();
+                // showResponse()
                 // window.location.replace("example.php?date="+ $('#monthSelector').val());
                 changeMonth()
             }
@@ -108,24 +111,26 @@ function reloadWithAjax(){
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("continer").innerHTML = this.responseText;
+           
         }          
     };
 
     $('.modal').modal('hide');
-    xmlhttp.open("GET", "example.php?date=" + selectedDate);
+    xmlhttp.open("GET", "Calendar.php?date=" + selectedDate + '&isAjaxReq=true');
     xmlhttp.send(); 
 }
 
-var msgText = document.getElementById("msgText").textContent;
-if (msgText != '') {
-    $('#response').show();
-} else {
-    $('#response').hide();
+function showResponse(){
+    var msgText = document.getElementById("msgText").textContent;
+    if (msgText != '') {
+        $('#response').show();
+    } else {
+        $('#response').hide();
+    }
+    setTimeout(function() {
+        $('#response').hide();
+    }, 3000);
 }
-
-setTimeout(function() {
-    $('#response').hide();
-}, 3000);
 
 $( document ).ready(function() {
     if (toDayEventJson.length > 0) {
@@ -142,3 +147,5 @@ $( document ).ready(function() {
         }
     }
 });
+
+showResponse()

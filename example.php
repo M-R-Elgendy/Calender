@@ -59,22 +59,47 @@ while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
 
 </head>
 
-<body id="continer">
-    <nav class="navtop" style="display: block;">
+<body>
+    <!-- <nav class="navtop" style="display: block;">
         <div>
             <h1>Event Calender</h1>
         </div>
+    </nav> -->
+
+    <nav class="navbar navbar-dark bg-dark navtop navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-calendar-event" viewBox="0 0 16 16">
+                    <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                    <path
+                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                </svg>
+                &nbsp;&nbsp;Event Calender
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">User Manager</a>
+                    </li>
+                </ul>
+            </div>
     </nav>
 
     <div id="easyNotify"></div>
 
-    <div id="response" class="alert alert-<?= $msgType ?> alert-dismissible fade show mt-3" role="alert"
-        style="display: none;">
-        <strong id="msgText"><?= $msg ?></strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div id='response' class='alert alert-<?= $msgType ?> alert-dismissible fade show mt-3' role='alert'
+        style='display: none;'>
+        <strong id='msgText'><?= $msg ?></strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>
 
-    <div class="content home">
+    <div class="content home" id="continer">
         <?= $calendar ?>
     </div>
 

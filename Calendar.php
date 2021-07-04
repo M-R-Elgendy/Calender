@@ -4,8 +4,10 @@ session_start();
 
 class Calendar
 {
+
     private $active_year, $active_month, $active_day, $dateValue;
     private $events = [];
+    private $addEvents = [];
 
 
     public function __construct($date = null)
@@ -40,6 +42,9 @@ class Calendar
 
     public function __toString()
     {
+        $_SESSION['userPer'] = 'editor';
+        $userType = $_SESSION['userPer'];
+
         $num_days = date('t', strtotime($this->active_day . '-' . $this->active_month . '-' . $this->active_year));
         $num_days_last_month = date('j', strtotime('last day of previous month', strtotime($this->active_day . '-' . $this->active_month . '-' . $this->active_year)));
         $days = [0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat'];
@@ -85,11 +90,12 @@ class Calendar
             $html .= '<div class="day_num' . $selected . '">';
             $html .= '<span><a class="eventAdder" href="javascript:undefined;" data-AttDate="' . $this->active_year . '-' . $this->active_month . '-' . $attData . '" data-bs-toggle="modal" data-bs-target="#AddModal">' . $i . '</a></span>';
 
-            $_SESSION['userPer'] = 'editor';
-            $userType = $_SESSION['userPer'];
-
             foreach ($this->events as $event) {
+
+
+
                 for ($d = 0; $d <= ($event[3] - 1); $d++) {
+
                     if (date('y-m-d', strtotime($this->active_year . '-' . $this->active_month . '-' . $i . ' -' . $d . ' day')) == date('y-m-d', strtotime($event[2]))) {
                         $html .=  ($userType == 'editor' ? '<a  data-bs-toggle="modal" data-bs-target="#modelID' . $event[0] . '">' : "");
                         $html .= '<div class="event' . $event[4] . '">';
@@ -117,59 +123,63 @@ class Calendar
                                 $yellow = "selected";
                             }
 
-                            $html .= '                
-                        <div class="modal fade" id="modelID' . $event[0] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <form action="" id="form' . $event[0] . '" method="post" enctype="multipart/form-data">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">' . $event[1] . '</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            if (!in_array($event[0], $this->addEvents)) {
+                                array_push($this->addEvents, $event[0]);
+                                $html .= '                
+                                    <div class="modal fade" id="modelID' . $event[0] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <form action="" id="form' . $event[0] . '" method="post" enctype="multipart/form-data">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">' . $event[1] . '</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div class="mb-3">
+                                                        <label for="name">Event</label>
+                                                        <input type="text" id="text' . $event[0] . '" class="form-control" value="' . $event[1] . '">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="name">Date</label>
+                                                        <input type="date" name="date" id="date' . $event[0] . '" class="form-control" value="' . $event[2] . '">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="name">Days</label>
+                                                        <input type="number" id="days' . $event[0] . '" class="form-control" value="' . $event[3] . '">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="name">Color</label>
+                                                        <select id="color' . $event[0] . '" class="form-control">
+                                                            <option value="red" ' . $red . '>Red</option>
+                                                            <option value="green" ' . $green . '>Green</option>
+                                                            <option value="blue" ' . $blue . '>Blue</option>
+                                                            <option value="yellow" ' . $yellow . '>Yellow</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a  href="javascript:undefined;" class="editEvent"  data-eventID="' . $event[0] . '"><button type="button" class="btn btn-primary ">Save changes</button></a>
+                                                    <a  href="javascript:undefined;" class="removeEvent"  data-eventID="' . $event[0] . '"><button type="button" class="btn btn-danger ">Remove</button></a>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
 
-                                        <div class="mb-3">
-                                            <label for="name">Event</label>
-                                            <input type="text" id="text' . $event[0] . '" class="form-control" value="' . $event[1] . '">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="name">Date</label>
-                                            <input type="date" name="date" id="date' . $event[0] . '" class="form-control" value="' . $event[2] . '">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="name">Days</label>
-                                            <input type="number" id="days' . $event[0] . '" class="form-control" value="' . $event[3] . '">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="name">Color</label>
-                                            <select id="color' . $event[0] . '" class="form-control">
-                                                <option value="red" ' . $red . '>Red</option>
-                                                <option value="green" ' . $green . '>Green</option>
-                                                <option value="blue" ' . $blue . '>Blue</option>
-                                                <option value="yellow" ' . $yellow . '>Yellow</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a  href="javascript:undefined;" class="editEvent"  data-eventID="' . $event[0] . '"><button type="button" class="btn btn-primary ">Save changes</button></a>
-                                        <a  href="javascript:undefined;" class="removeEvent"  data-eventID="' . $event[0] . '"><button type="button" class="btn btn-danger ">Remove</button></a>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        ';
+                                    ';
+                            }
                         }
                     }
                 }
             }
             $html .= '</div>';
         }
+
         for ($i = 1; $i <= (42 - $num_days - max($first_day_of_week, 0)); $i++) {
             $html .= '
                 <div class="day_num ignore">
