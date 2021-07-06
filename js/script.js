@@ -132,15 +132,25 @@ function showResponse(){
     }, 3000);
 }
 
+var myClick = function() {
+    window.focus();
+    window.location.replace("example.php");
+    this.cancel();
+  };
+
 $( document ).ready(function() {
     if (toDayEventJson.length > 0) {
         for (let i = 0; i < toDayEventJson.length; i++) {
             var event = toDayEventJson[i];
+
+          
+
             var options = {
                 title: "Today Event",
                 options: {
                     body: event['txt'] + ' - For ' + event['days'] + "Days(s)",
                     lang: 'en-USA',
+                    onClick: myClick,
                 }
             };
             $("#easyNotify").easyNotify(options);
