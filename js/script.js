@@ -138,24 +138,41 @@ var myClick = function() {
     this.cancel();
   };
 
-$( document ).ready(function() {
-    if (toDayEventJson.length > 0) {
-        for (let i = 0; i < toDayEventJson.length; i++) {
-            var event = toDayEventJson[i];
+  function notifyingSetting(){
+    if(document.getElementById("notifySwitcher").checked){
+      localStorage.setItem("notifyingPref","notifyMe");
+    }else{
+        localStorage.setItem("notifyingPref","doNotNotifyMe");
+    }
+  }
 
-          
-
-            var options = {
-                title: "Today Event",
-                options: {
-                    body: event['txt'] + ' - For ' + event['days'] + "Days(s)",
-                    lang: 'en-USA',
-                    onClick: myClick,
-                }
-            };
-            $("#easyNotify").easyNotify(options);
+  function Notify(){
+    if(document.getElementById("notifySwitcher").checked){
+        if (toDayEventJson.length > 0) {
+            for (let i = 0; i < toDayEventJson.length; i++) {
+                var event = toDayEventJson[i];
+                var options = {
+                    title: "Today Event",
+                    options: {
+                        body: event['txt'] + ' - For ' + event['days'] + "Days(s)",
+                        lang: 'en-USA',
+                        onClick: myClick,
+                    }
+                };
+                $("#easyNotify").easyNotify(options);
+            }
         }
     }
+  }
+  
+$( document ).ready(function() {
+    let noifyPref = localStorage.getItem("notifyingPref");
+    if (noifyPref == 'notifyMe'){
+        $("#notifySwitcher").prop('checked', true);
+    }else if(noifyPref == 'doNotNotifyMe'){
+        $("#notifySwitcher").prop('checked', false);
+    }
+    Notify()
 });
 
 showResponse()

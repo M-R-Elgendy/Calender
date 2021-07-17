@@ -35,6 +35,9 @@ while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
     <script src="js/vendor/jquery-3.6.0.slim.min.js"></script>
     <script src="js/notify.js"></script>
 
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/calendar.css" rel="stylesheet" type="text/css">
 
@@ -86,6 +89,17 @@ while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
 
                     <li class="nav-item">
                         <a class="nav-link" href="#">User Manager</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="notifySwitcher" style="cursor: pointer;"
+                                onchange="Notify(); notifyingSetting();" />
+                            <label class="form-check-label" for="notifySwitcher"
+                                style="color: white;">&nbsp;Notifications</label>
+                        </div>
                     </li>
                 </ul>
             </div>
