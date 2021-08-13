@@ -148,20 +148,20 @@ var myClick = function() {
 
   function Notify(){
     if(document.getElementById("notifySwitcher").checked){
-        if (toDayEventJson.length > 0) {
-            for (let i = 0; i < toDayEventJson.length; i++) {
-                var event = toDayEventJson[i];
-                var options = {
-                    title: "Today Event",
-                    options: {
-                        body: event['txt'] + ' - For ' + event['days'] + " Days(s)",
-                        lang: 'en-USA',
-                        onClick: myClick,
-                    }
-                };
-                $("#easyNotify").easyNotify(options);
-            }
-        }
+       
+        $("div.selected").children("a").each(function( index ) {
+            
+            var options = {
+                title: "Today Event",
+                options: {
+                    body: $( this ).text(),
+                    lang: 'en-USA',
+                    onClick: myClick,
+                }
+            };
+            $("#easyNotify").easyNotify(options);
+
+        });
     }
   }
   
