@@ -18,7 +18,7 @@ class Calendar
                 $newMonth = explode("-", $newMonth);
                 $this->active_year = $newMonth[0];
                 $this->active_month = $newMonth[1];
-                $this->active_day = 1;
+                $this->active_day = 0;
                 $this->dateValue = $newMonth[0] . "-" . $newMonth[1];
             } else {
                 $this->active_year = $date != null ? date('Y', strtotime($date)) : date('Y');

@@ -154,7 +154,7 @@ var myClick = function() {
                 var options = {
                     title: "Today Event",
                     options: {
-                        body: event['txt'] + ' - For ' + event['days'] + "Days(s)",
+                        body: event['txt'] + ' - For ' + event['days'] + " Days(s)",
                         lang: 'en-USA',
                         onClick: myClick,
                     }

@@ -44,10 +44,19 @@ while ($allEventsRow = mysqli_fetch_array($allEventsResulet)) {
     <?php
 
     $toDay = date("Y-m-d");
-    $toDayEventSql = "SELECT * FROM events WHERE date = '$toDay'";
+    $toDayEventSql = "SELECT `txt`, `days`, `date` FROM events WHERE date = '$toDay' OR (date < DATE_ADD('$toDay' , INTERVAL 2 DAY) AND date > DATE_ADD('$toDay' , INTERVAL -2 DAY))";
     $toDayEventarray = [];
     $toDayEventResulet = mysqli_query($connection, $toDayEventSql);
     while ($toDayEventRow = mysqli_fetch_assoc($toDayEventResulet)) {
+        // $eventStartDate = $toDayEventRow['date'];
+        // $eventDayes = $toDayEventRow['days'];
+        // $eventText = $toDayEventRow['txt'];
+
+        // $eventEndDate = date('Y-m-d', strtotime($eventStartDate . " + $eventDayes days"));
+        // if ($toDay >= $eventStartDate && $toDay <= $eventEndDate) {
+        //     $toDayEventarray[] = array("txt" => $eventText, "days" => $eventDayes, "date" => $eventStartDate);
+        // }
+
         $toDayEventarray[] = $toDayEventRow;
     }
     $toDayEventJson = json_encode($toDayEventarray);
